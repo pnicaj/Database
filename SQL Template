@@ -1,20 +1,34 @@
+--Deleting data from a table
 SELECT * FROM customer;
 
 INSERT INTO customer (name, address, city, state, zip) 
     VALUES ('Fred Flintston', '123 Cobblestone Way', 'Bedrock', 'CA', '91234'); --insert a row into the table
 UPDATE customer SET address = '123 Music Avenue', zip = '98056' WHERE id = 4; --update a row
-DELETE FROM customer where id = 4;--delete table from row
+DELETE FROM customer where id = 4;--delete row from table
 
+--selecting null values and no null values
+SELECT * FROM test WHERE c IS NULL;
+SELECT * FROM test WHERE c IS NOT NULL;
 
 --creating and inserting to a new table
 CREATE TABLE test( 
     a INTEGER,
     b TEXT
-);--create a table                
+);               
 INSERT INTO test VALUES (1, "a");
 SELECT * FROM  test;
 
---deleteing and readding table
+--creating table with data not having null values
+CREATE TABLE test( 
+    a INTEGER NOT NULL,
+    b TEXT NOT NULL
+);--errors occur when values are not entered for either
+
+--Deleteing rows in a table
+SELECT * FROM test; 
+DELETE FROM test WHERE a = 1;
+
+--deleteing and reading table
 DROP TABLE test;
 DROP TABLE IF EXISTS test;
 
@@ -28,3 +42,50 @@ INSERT INTO test(a, b) VALUES (
 'two'
 );
 SELECT * FROM test;
+
+--adding rows with values and specific values
+CREATE TABLE test (a INTEGER, b TEXT, c TEXT);
+SELECT * FROM test;
+INSERT INTO test VALUES (1, 'this', 'Right here!');
+INSERT INTO test (a, b) VALUES (2, 'that');
+
+--giving defaults and unique constraints for table
+DROP TABLE test;
+CREATE TABLE test (
+a INTEGER UNIQUE,
+b TEXT, 
+c TEXT DEFAULT 'default');--give a unique constraint so values are different and c with default so no null
+INSERT INTO test (a, b, c) VALUES (1, 'test', 'not default');
+INSERT INTO test (a, b) VALUES (1, 'test');
+SELECT * from test;
+
+--altering table adding column to table
+ALTER TABLE test ADD d Text;
+
+--adding primary key for table or id
+CREATE TABLE test (
+id INTEGER PRIMARY KEY,
+a INTEGER, 
+b TEXT DEFAULT 'default'
+);
+
+--filtering data with or and like (containing words similar
+SELECT Name,Continent, Population FROM Country
+ WHERE Population < 100000 OR Population IS NULL ORDER BY Population DESC;
+
+SELECT Name,Continent, Population FROM Country
+ WHERE Name LIKE '%island%' ORDER BY Name;--can contain letters after island
+
+SELECT Name,Continent, Population FROM Country
+ WHERE Name LIKE '%island' ORDER BY Name;--only ends in island 
+
+SELECT Name,Continent, Population FROM Country
+ WHERE Name LIKE '_i%' ORDER BY Name;--the second letter contains i
+ 
+SELECT Name,Continent, Population FROM Country
+ WHERE Continent IN ('Europe', 'Asia') ORDER BY Name;--get countries in europe and asia continents
+
+--conditional expression
+Select 
+    CASE a WHEN 1 THEN 'true' ELSE 'false' END AS boola,
+    CASE b WHEN 0 THEN 'true' ELSE 'false' END AS boolb
